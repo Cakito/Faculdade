@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/template.xhtml">
+
+	<ui:define name="cabecalho">
+			<ui:include src ="/template/cabecalho.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="centro">
+	
+	<h:form id="formL">
+     <br/>
+     <br/>
+	        <p:dataTable id="tblLivro" var="livro" value="#{ConsultaL.livros}"
+	         paginator="true" rows="15" emptyMessage="Sem registros."
+	         editable="true">
+        		
+	         	<f:facet name="header">
+                	Lista de Livros
+            	</f:facet>
+	         
+	            <p:column headerText="ISBN">
+		            <h:outputText value="#{livro.isbn}" />
+	            </p:column>
+	            
+	            <p:column headerText="Título">
+    	   			 <h:outputText value="#{livro.titulo}" />
+    			</p:column>
+	            
+	            <p:column headerText="Ano">
+    	  			  <h:outputText value="#{livro.ano}" />
+    			</p:column>
+	            
+	            <p:column headerText="Volume" >
+    	   			  <h:outputText value="#{livro.volume}" />
+    			</p:column>
+	            
+	            <p:column headerText="Edição">
+    	 			   <h:outputText value="#{livro.edicao}" />
+    			</p:column>
+    			
+    			<p:column headerText="Autor">
+    	  			   <h:outputText value="#{livro.autor.nome_au}" />
+    			</p:column>
+    			
+    			<p:column headerText="Editora">
+    	   				<h:outputText value="#{livro.editora.nome_edit}" />
+    			</p:column>
+	            
+	            <p:column headerText="Operações">
+			        <p:commandButton icon="pi pi-pencil" actionListener="#{ConsultaL.LivroEditar}"  
+			        	onclick="PF('dlgEditarLivro').show()"
+			        	update=":formEditar:pgEditar"/>
+			        	
+			        <p:commandButton icon="ui-icon-trash" actionListener="#{ConsultaL.LivroDeletar}"
+			       		 onclick="PF('dlgDeletarLivro').show()"
+			       		 update=":fDeletar:pgDeletar"/>
+			    </p:column>
+	            
+	        </p:dataTable>
+	        
+	        <p:commandButton icon="pi pi-user-plus" value="Cadastrar" actionListener="#{ConsultaL.LivroCadastrar}"
+			        	oncomplete="PF('dlgCadastrarLivro').show()"
+			        	update=":formCadastrar:pgCadastrar"/>
+	     </h:form>
+	     
+	     <p:dialog header="Cadastrar Livro" widgetVar="dlgCadastrarLivro" modal="true"
+			 resizable="false" appendTo="@(body)">
+			
+			<h:form id="formCadastrar" >
+				<p:outputPanel id="pgCadastrar" style="text-align:center;">
+					<p:panelGrid columns="1">
+						<p:outputLabel value="ISBN" />
+						<p:inputText value="#{ConsultaL.livro.isbn}" />
+					
+						<p:outputLabel value="Titulo" />
+						<p:inputText value="#{ConsultaL.livro.titulo}" />
+						
+						<p:outputLabel value="Ano" />
+						<p:inputText value="#{ConsultaL.livro.ano}" />
+					
+						<p:outputLabel value="Volume" />
+						<p:inputText value="#{ConsultaL.livro.volume}" />
+						
+						<p:outputLabel value="Edição" />
+						<p:inputText value="#{ConsultaL.livro.edicao}"/>
+						
+						<p:outputLabel value="Autor" />
+						<p:inputText value="#{ConsultaL.livro.autor.id_au}"/>
+						
+						<p:outputLabel value="Editora" />
+						<p:inputText value="#{ConsultaL.livro.editora.id_edit}"/>
+						
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2">
+					
+						<p:commandButton value="Confirmar" actionListener="#{ConsultaL.Cadastrar}"
+							oncomplete="PF('dlgCadastrarLivro').hide()"
+							update=":formL:tblLivro" />
+						
+						<p:commandButton value="Cancelar"
+							onclick="PF('dlgCadastrarLivro').hide()"/>
+					</p:panelGrid>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+	     
+	    <p:dialog header="Editar Livro" widgetVar="dlgEditarLivro" modal="true"
+			 resizable="false" appendTo="@(body)">
+			
+			<h:form id="formEditar" >
+				<p:outputPanel id="pgEditar" style="text-align:center;">
+					<p:panelGrid columns="1">
+						<p:outputLabel value="ISBN" />
+						<p:inputText value="#{ConsultaL.livro.isbn}" disabled="true"/>
+					
+						<p:outputLabel value="Titulo" />
+						<p:inputText value="#{ConsultaL.livro.titulo}" />
+						
+						<p:outputLabel value="Ano" />
+						<p:inputText value="#{ConsultaL.livro.ano}" />
+					
+						<p:outputLabel value="Volume" />
+						<p:inputText value="#{ConsultaL.livro.volume}" />
+						
+						<p:outputLabel value="Edição" />
+						<p:inputText value="#{ConsultaL.livro.edicao}"/>
+						
+						<p:outputLabel value="Autor" />
+						<p:inputText value="#{ConsultaL.livro.autor.id_au}" />
+						
+						<p:outputLabel value="Editora" />
+						<p:inputText value="#{ConsultaL.livro.editora.id_edit}" />
+						
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2">
+					
+						<p:commandButton value="Confirmar" actionListener="#{ConsultaL.Update}"
+							oncomplete="PF('dlgEditarLivro').hide()"
+							update=":formL:tblLivro" />
+						
+						<p:commandButton value="Cancelar"
+							onclick="PF('dlgEditarLivro').hide()"/>
+					</p:panelGrid>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Apagar Livro" widgetVar="dlgDeletarLivro" modal="true"
+		 resizable="false" appendTo="@(body)">
+			
+			<h:form id="fDeletar">
+				<p:outputPanel id="pgDeletar" style="text-align:center;">
+					<p:panelGrid columns="2">
+						<p:outputLabel value="ISBN" />
+						<p:inputText value="#{ConsultaL.livro.isbn}" disabled="true" />
+						
+						<p:outputLabel value="Titulo" />
+						<p:inputText value="#{ConsultaL.livro.titulo}" disabled="true"/>
+						
+						<p:outputLabel value="Ano" />
+						<p:inputText value="#{ConsultaL.livro.ano}" disabled="true"/>
+						
+						<p:outputLabel value="Volume" />
+						<p:inputText value="#{ConsultaL.livro.volume}" disabled="true"/>
+						
+						<p:outputLabel value="Edição" />
+						<p:inputText value="#{ConsultaL.livro.edicao}" disabled="true"/>	
+						
+						<p:outputLabel value="Autor" />
+						<p:inputText value="#{ConsultaL.livro.autor}" disabled="true"/>	
+						
+						<p:outputLabel value="Editora" />
+						<p:inputText value="#{ConsultaL.livro.editora}" disabled="true"/>					
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2">
+					
+						<p:commandButton value="Confirmar" actionListener="#{ConsultaL.Deletar}"
+							oncomplete="PF('dlgDeletarLivro').hide()"
+							update=":formL:tblLivro" />
+						
+						<p:commandButton value="Cancelar" 
+							onclick="PF('dlgDeletarLivro').hide()" />
+					
+					</p:panelGrid>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

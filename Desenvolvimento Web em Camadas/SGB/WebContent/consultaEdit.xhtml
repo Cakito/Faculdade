@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/template.xhtml">
+
+	<ui:define name="cabecalho">
+			<ui:include src ="/template/cabecalho.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="centro">
+	
+	<h:form id="formE">
+	     <br/>
+	     <br/>
+	        <p:dataTable id="tblEditora" var="editora" value="#{ConsultaE.editoras}"
+	         paginator="true" rows="15" emptyMessage="Sem registros."
+	         editable="true">
+        		
+	         	<f:facet name="header">
+                	Lista de Editoras
+            	</f:facet>
+	         
+	            <p:column headerText="ID">
+		            <h:outputText value="#{editora.id_edit}" />
+	            </p:column>
+	            
+	            <p:column headerText="Nome">
+	                <h:outputText value="#{editora.nome_edit}" />
+	            </p:column>
+	                        
+	            <p:column headerText="Operações">
+			        <p:commandButton icon="pi pi-pencil" actionListener="#{ConsultaE.EditoraEditar}"  
+			        	onclick="PF('dlgEditarEditora').show()"
+			        	update=":fEditar:pgEditar"/>
+			        	
+			        <p:commandButton icon="ui-icon-trash" actionListener="#{ConsultaE.EditoraDeletar}"
+			        onclick="PF('dlgDeletarEditora').show()"
+			        update=":fDeletar:pgDeletar"/>
+			        	
+			    </p:column>
+	            
+	        </p:dataTable>
+	        
+	        	<p:commandButton icon="pi pi-user-plus" value="Cadastrar" actionListener="#{ConsultaE.EditoraCadastrar}"
+			        	onclick="PF('dlgCadastrarEditora').show()"
+			        	update=":fCadastrar:pgCadastrar"/>
+
+	     </h:form>
+	     
+	      <p:dialog header="Cadastrar Editora" widgetVar="dlgCadastrarEditora" modal="true"
+			 resizable="false" appendTo="@(body)">
+			
+			<h:form id="fCadastrar" >
+				<p:outputPanel id="pgCadastrar" style="text-align:center;">
+					<p:panelGrid columns="1">
+						<p:outputLabel value="ID" />
+						<p:inputText value="#{ConsultaE.editora.id_edit}"/>
+					  	
+						<p:outputLabel value="Nome" />
+						<p:inputText value="#{ConsultaE.editora.nome_edit}"/>
+						
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2">
+					
+						<p:commandButton value="Confirmar" actionListener="#{ConsultaE.Cadastrar}"
+							oncomplete="PF('dlgCadastrarEditora').hide()"
+							update=":formE:tblEditora" />
+						
+						<p:commandButton value="Cancelar"
+							onclick="PF('dlgCadastrarEditora').hide()"/>
+					</p:panelGrid>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+	     
+	    <p:dialog header="Editar Editora" widgetVar="dlgEditarEditora" modal="true"
+			 resizable="false" appendTo="@(body)">
+			
+			<h:form id="fEditar" >
+				<p:outputPanel id="pgEditar" style="text-align:center;">
+					<p:panelGrid columns="1">
+						<p:outputLabel value="ID" />
+						<p:inputText value="#{ConsultaE.editora.id_edit}" disabled="true"/>
+					
+						<p:outputLabel value="Nome" />
+						<p:inputText value="#{ConsultaE.editora.nome_edit}"/>
+						
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2">
+					
+						<p:commandButton value="Confirmar" actionListener="#{ConsultaE.Update}"
+							oncomplete="PF('dlgEditarEditora').hide()"
+							update=":formE:tblEditora" />
+						
+						<p:commandButton value="Cancelar"
+							onclick="PF('dlgEditarEditora').hide()"/>
+					</p:panelGrid>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Apagar Editora" widgetVar="dlgDeletarEditora" modal="true"
+		 resizable="false" appendTo="@(body)">
+			
+			<h:form id="fDeletar">
+				<p:outputPanel id="pgDeletar" style="text-align:center;">
+					<p:panelGrid columns="2">
+						<p:outputLabel value="ID" />
+						<p:inputText value="#{ConsultaE.editora.id_edit}" disabled="true" />
+						
+						<p:outputLabel value="Nome" />
+						<p:inputText value="#{ConsultaE.editora.nome_edit}" disabled="true"/>		
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2">
+					
+						<p:commandButton value="Confirmar" actionListener="#{ConsultaE.Deletar}"
+							oncomplete="PF('dlgDeletarEditora').hide()"
+							update=":formE:tblEditora" />
+						
+						<p:commandButton value="Cancelar" 
+							onclick="PF('dlgDeletarEditora').hide()"/>
+					
+					</p:panelGrid>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+		
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/template.xhtml">
+	
+	<ui:define name="cabecalho">
+			<ui:include src ="/template/cabecalho.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="centro">
+	
+	<h:form>
+    		<p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true" />
+	 			<h3 style="text-align:center">Cadastro(Empréstimo)</h3>
+    		<h:panelGrid columns="2" cellpadding="10">
+    			<h:outputText value="ID:" />
+   				<p:inputText label="id_empr" value="#{nomeview.titulo}" required="true" />
+ 
+	        	<p:outputLabel for="dataemp" value="Data do Empréstimo" />
+   				<p:datePicker id="dataemp" value="#{emprform.dataemp}" style="width:auto" pattern="dd/MM/yyyy" />
+   				 
+   				 <p:outputLabel for="dataent" value="Data de Devolução" />
+   				 <p:datePicker id="dataent" value="#{emprform.dataent}" style="width:auto" pattern="dd/MM/yyyy" />
+	        </h:panelGrid>
+	      	<br/>
+	      	<br/>
+    			<p:commandButton value="Cadastrar" icon="pi pi-check " update=""> 
+    				<p:confirm header="Confirmação" message="Confirmar esta ação?"/>
+    			</p:commandButton>
+    				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+       					<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+       			 		<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+   					</p:confirmDialog>    	
+		</h:form>
+	</ui:define>
+</ui:composition>

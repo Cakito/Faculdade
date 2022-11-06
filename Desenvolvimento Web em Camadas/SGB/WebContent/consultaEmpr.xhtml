@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/template/template.xhtml">
+
+	<ui:define name="cabecalho">
+			<ui:include src ="/template/cabecalho.xhtml"/>
+	</ui:define>
+	
+	<ui:define name="centro">
+	
+	<h:form id="formEmpr">
+     <br/>
+     <br/>
+	        <p:dataTable id="tblEmprestimo" var="emprestimo" value="#{ConsultaEmpr.emprestimos}"
+	         paginator="true" rows="15" emptyMessage="Sem registros."
+	         editable="true">
+        		
+	         	<f:facet name="header">
+                	Lista de Empréstimos
+            	</f:facet>
+	         
+	            <p:column headerText="ID">
+		            <h:outputText value="#{emprestimo.id_emp}" />
+	            </p:column>
+	            
+	            <p:column headerText="Data Empréstimo">
+	                <p:datePicker value="#{emprestimo.dataEmprest}" locale="pt_BR" navigator="true" pattern="dd/MM/yyyy" disabled="true"/>
+	            </p:column>
+	            
+	            <p:column headerText="Data Devolução" >
+	                <p:datePicker value="#{emprestimo.dataDevol}" locale="pt_BR" navigator="true" pattern="dd/MM/yyyy" disabled="true"/>
+	            </p:column>
+	            
+	            <p:column headerText="CPF Usuário">
+	                <h:outputText value="#{emprestimo.usuario.cpf}" />
+	            </p:column>
+	            
+	            <p:column headerText="ISBN Livro">
+	                <h:outputText value="#{emprestimo.livro.isbn}" />
+	            </p:column>
+	            
+	            <p:column headerText="Operações">
+			        <p:commandButton icon="pi pi-pencil" actionListener="#{ConsultaEmpr.EmprestimoEditar}"  
+			        	onclick="PF('dlgEditarEmprestimo').show()"
+			        	update=":formEditar:pgEditar"/>
+			        	
+			        <p:commandButton icon="ui-icon-trash" actionListener="#{ConsultaEmpr.EmprestimoDeletar}"
+			       		 onclick="PF('dlgDeletarEmprestimo').show()"
+			       		 update=":fDeletar:pgDeletar"/>
+			        	
+			    </p:column>
+	            
+	        </p:dataTable>
+	        
+	        <p:commandButton icon="pi pi-user-plus" value="Cadastrar" actionListener="#{ConsultaEmpr.EmprestimoCadastrar}"
+			        	oncomplete="PF('dlgCadastrarEmprestimo').show()"
+			        	update=":formCadastrar:pgCadastrar"/>
+	
+	     </h:form>
+	     
+	      <p:dialog header="Cadastrar Emprestimo" widgetVar="dlgCadastrarEmprestimo" modal="true"
+			 resizable="false" appendTo="@(body)">
+			
+			<h:form id="formCadastrar" >
+				<p:outputPanel id="pgCadastrar" style="text-align:center;">
+					<p:panelGrid columns="1">
+						<p:outputLabel value="ID" />
+						<p:inputText value="#{ConsultaEmpr.emprestimo.id_emp}" />
+					
+						<p:outputLabel for="button" value="Data Empréstimo" />
+						<p:datePicker id="button" value="#{ConsultaEmpr.emprestimo.dataEmprest}" locale="pt_BR"/>
+						
+						<p:outputLabel for="botao" value="Data Devolução" />
+						<p:datePicker id="botao" value="#{ConsultaEmpr.emprestimo.dataDevol}" locale="pt_BR" />
+					
+						<p:outputLabel value="CPF Usuário" />
+						<p:inputText value="#{ConsultaEmpr.emprestimo.usuario.cpf}"/>
+				<!--    <p:inputMask value="#{ConsultaEmpr.emprestimo.usuario.cpf}" mask="999 999 999 99"/> -->
+						
+						<p:outputLabel value="ISBN Livro" />
+						<p:inputText value="#{ConsultaEmpr.emprestimo.livro.isbn}"/>
+						
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2">
+					
+						<p:commandButton value="Confirmar" actionListener="#{ConsultaEmpr.Cadastrar}"
+							oncomplete="PF('dlgCadastrarEmprestimo').hide()"
+							update=":formEmpr:tblEmprestimo" />
+						
+						<p:commandButton value="Cancelar" 
+							onclick="PF('dlgCadastrarEmprestimo').hide()"/>
+					</p:panelGrid>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+	     
+	    <p:dialog header="Editar Emprestimo" widgetVar="dlgEditarEmprestimo" modal="true"
+			 resizable="false" appendTo="@(body)">
+			
+			<h:form id="formEditar" >
+				<p:outputPanel id="pgEditar" style="text-align:center;">
+					<p:panelGrid columns="1">
+						<p:outputLabel value="ID" />
+						<p:inputText value="#{ConsultaEmpr.emprestimo.id_emp}" disabled = "true" />
+					
+						<p:outputLabel for="button" value="Data Empréstimo" />
+						<p:datePicker id="button" value="#{ConsultaEmpr.emprestimo.dataEmprest}" locale="pt_BR"/>
+						
+						<p:outputLabel for="botao" value="Data Devolução" />
+						<p:datePicker id="botao" value="#{ConsultaEmpr.emprestimo.dataDevol}" locale="pt_BR" />
+					
+						<p:outputLabel value="CPF Usuário" />
+						<p:inputText value="#{ConsultaEmpr.emprestimo.usuario.cpf}" />
+						
+						<p:outputLabel value="ISBN Livro" />
+						<p:inputText value="#{ConsultaEmpr.emprestimo.livro.isbn}"/>
+						
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2">
+					
+						<p:commandButton value="Confirmar" actionListener="#{ConsultaEmpr.Update}"
+							oncomplete="PF('dlgEditarEmprestimo').hide()"
+							update=":formEmpr:tblEmprestimo" />
+						
+						<p:commandButton value="Cancelar" 
+							oncomplete="PF('dlgEditarEmprestimo').hide()"/>
+					</p:panelGrid>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Apagar Emprestimo" widgetVar="dlgDeletarEmprestimo" modal="true"
+		 resizable="false" appendTo="@(body)">
+			
+			<h:form id="fDeletar">
+				<p:outputPanel id="pgDeletar" style="text-align:center;">
+					<p:panelGrid columns="2">
+						<p:outputLabel value="ID" />
+						<p:inputText value="#{ConsultaEmpr.emprestimo.id_emp}" disabled="true" />
+						
+						<p:outputLabel for ="button" value="Data Empréstimo" />
+						<p:datePicker id="button" value="#{ConsultaEmpr.emprestimo.dataEmprest}" locale="pt_BR" disabled="true" />
+					
+						<p:outputLabel for="botao" value="Data Devolução" />
+						<p:datePicker id="botao" value="#{ConsultaEmpr.emprestimo.dataDevol}" locale="pt_BR" disabled="true" />
+						
+						<p:outputLabel value="CPF Usuário" />
+						<p:inputMask value="#{ConsultaEmpr.emprestimo.usuario.cpf}" disabled="true"/>
+						
+						<p:outputLabel value="ISBN Livro" />
+						<p:inputText value="#{ConsultaEmpr.emprestimo.livro.isbn}" disabled="true"/>
+						
+					</p:panelGrid>
+					
+					<p:panelGrid columns="2">
+					
+						<p:commandButton value="Confirmar" actionListener="#{ConsultaEmpr.Deletar}"
+							oncomplete="PF('dlgDeletarEmprestimo').hide()"
+							update=":formEmpr:tblEmprestimo" />
+						
+						<p:commandButton value="Cancelar" 
+							oncomplete="PF('dlgDeletarEmprestimo').hide()" />
+					
+					</p:panelGrid>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

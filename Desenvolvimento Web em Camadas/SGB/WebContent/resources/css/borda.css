@@ -1,0 +1,6 @@
+@charset "ISO-8859-1";
+
+.ui-layout-unit-content{
+	border: none;
+	overflow: visible !important;
+}
